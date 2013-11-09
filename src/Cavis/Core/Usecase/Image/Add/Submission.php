@@ -62,6 +62,16 @@ class Submission extends Data\Image
         $this->photoshopper->resize_to_width(474);
     }
 
+    public function generate_background()
+    {
+        $this->background = new Data\File;
+        $this->photoshopper->setup($this->file->tmp_name, $this->file->tmp_name.'.blur.png');
+        $this->photoshopper->resize_to_width(978);
+        $this->photoshopper->setup($this->file->tmp_name.'.blur.png');
+        $this->photoshopper->gaussian_blur(10);
+        $this->background->full_path = $this->file->tmp_name.'.blur.png';
+    }
+
     public function generate_thumbnail()
     {
         $this->thumbnail = new Data\File;
@@ -76,6 +86,7 @@ class Submission extends Data\Image
             $this->name,
             $this->repository->save_file($this->thumbnail),
             $this->repository->save_file($this->file),
+            $this->repository->save_file($this->background),
             $this->category->id
         );
     }

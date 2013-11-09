@@ -22,6 +22,7 @@ class Interactor
         {
             $this->submission->resize_to_layout();
         }
+        $this->submission->generate_background();
         $this->submission->generate_thumbnail();
         return $this->submission->submit();
     }

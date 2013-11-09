@@ -99,6 +99,17 @@ class Submission extends ObjectBehavior
         $this->resize_to_layout();
     }
 
+    function it_can_generate_a_blurred_image_background($photoshopper)
+    {
+        $this->background->shouldBe(NULL);
+        $photoshopper->setup('file_tmp_name', 'file_tmp_name.blur.png')->shouldBeCalled();
+        $photoshopper->resize_to_width(978)->shouldBeCalled();
+        $photoshopper->setup('file_tmp_name.blur.png')->shouldBeCalled();
+        $photoshopper->gaussian_blur(10)->shouldBeCalled();
+        $this->generate_background();
+        $this->background->full_path->shouldBe('file_tmp_name.blur.png');
+    }
+
     function it_generates_a_thumbnail($photoshopper)
     {
         $photoshopper->setup('file_tmp_name', 'file_tmp_name.thumb.png')->shouldBeCalled();
@@ -110,13 +121,16 @@ class Submission extends ObjectBehavior
 
     function it_submits_the_proposal($repository)
     {
+        $this->generate_background();
         $this->generate_thumbnail();
         $repository->save_file($this->thumbnail)->shouldBeCalled()->willReturn('thumbnail_path');
         $repository->save_file($this->file)->shouldBeCalled()->willReturn('file_path');
+        $repository->save_file($this->background)->shouldBeCalled()->willReturn('background_path');
         $repository->save_image(
             'name',
             'thumbnail_path',
             'file_path',
+            'background_path',
             'category_id'
         )->shouldBeCalled()->willReturn('image_id');
         $this->submit()->shouldReturn('image_id');

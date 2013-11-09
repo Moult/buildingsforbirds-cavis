@@ -31,6 +31,11 @@ class Image extends ObjectBehavior
         $this->file->shouldBe(NULL);
     }
 
+    function it_should_have_a_background()
+    {
+        $this->background->shouldBe(NULL);
+    }
+
     function it_should_have_comments()
     {
         $this->comments->shouldBe(NULL);

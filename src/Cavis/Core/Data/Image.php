@@ -18,6 +18,10 @@ class Image
      * @var Data\File
      */
     public $file;
+    /**
+     * @var Data\File
+     */
+    public $background;
     public $comments;
     public $number_of_votes;
     /**
