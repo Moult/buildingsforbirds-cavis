@@ -2,6 +2,11 @@
 
 System for image voting and commenting.
 
+## Forked modifications
+
+ * Data\Image now records backgrounds.
+ * Usecase\Image\Add generates and saves backgrounds based on the image file.
+
 # Features
 
 The following usecases are supported.
